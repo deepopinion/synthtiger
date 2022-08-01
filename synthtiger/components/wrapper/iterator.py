@@ -36,7 +36,7 @@ class Iterator(Component):
         sub_metas = meta["metas"]
 
         for idx, component in enumerate(self.components):
-            component.apply(layers, sub_metas[idx])
+            meta["metas"][idx] = component.apply(layers, sub_metas[idx])
 
         return meta
 

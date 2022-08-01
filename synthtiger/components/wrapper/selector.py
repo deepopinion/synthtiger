@@ -41,7 +41,7 @@ class Selector(Component):
         idx = meta["idx"]
         sub_meta = meta["meta"]
 
-        self.components[idx].apply(layers, sub_meta)
+        meta["meta"] = self.components[idx].apply(layers, sub_meta)
 
         return meta
 

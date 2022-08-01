@@ -41,7 +41,7 @@ class Switch(Component):
         sub_meta = meta["meta"]
 
         if state:
-            self.component.apply(layers, sub_meta)
+            meta["meta"]= self.component.apply(layers, sub_meta)
 
         return meta
 

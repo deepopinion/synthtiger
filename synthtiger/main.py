@@ -6,6 +6,8 @@ MIT license
 
 import argparse
 import pprint
+import random
+import numpy as np
 import time
 
 import synthtiger
@@ -85,6 +87,11 @@ def parse_args():
         nargs="?",
         help="Config file path.",
     )
+    parser.add_argument(
+        "--seed",
+        type=int,
+        help="Set seed for reproducability",
+    )
     args = parser.parse_args()
 
     pprint.pprint(vars(args))
@@ -95,6 +102,9 @@ def parse_args():
 def main():
     start_time = time.time()
     args = parse_args()
+    if args.seed:
+        random.seed(args.seed)
+        np.random.seed(args.seed)
     run(args)
     end_time = time.time()
     print(f"{end_time - start_time:.2f} seconds elapsed")

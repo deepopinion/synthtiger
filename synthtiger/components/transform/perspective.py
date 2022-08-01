@@ -92,6 +92,7 @@ class Perspective(Component):
         origin = group.quad
         quad = np.array(origin + offsets, dtype=np.float32)
         matrix = cv2.getPerspectiveTransform(origin, quad)
+        meta['matrix'] = matrix
 
         for layer in layers:
             quad = np.append(layer.quad, np.ones((4, 1)), axis=-1).dot(matrix.T)
