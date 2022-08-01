@@ -31,11 +31,12 @@ def read_config(path):
     return config
 
 
-def generator(path, name, config=None, worker=0, verbose=False):
+def generator(path, name, config=None, worker=0, verbose=False, globalseed: int=None):
     if worker > 0:
         queue = Queue(maxsize=1024)
-        for _ in range(worker):
-            _run(_worker, (path, name, config, queue, verbose))
+        for i in range(worker):
+            workerseed = globalseed + i if globalseed else None
+            _run(_worker, (path, name, config, queue, verbose, workerseed))
 
         while True:
             data = queue.get()
@@ -55,9 +56,9 @@ def _run(func, args):
     return proc
 
 
-def _worker(path, name, config, queue, verbose):
-    random.seed()
-    np.random.seed()
+def _worker(path, name, config, queue, verbose, seed):
+    random.seed(seed)
+    np.random.seed(seed)
     template = read_template(path, name, config)
 
     while True:

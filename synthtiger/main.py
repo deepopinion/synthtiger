@@ -20,7 +20,7 @@ def run(args):
 
     template = synthtiger.read_template(args.script, args.name, config)
     generator = synthtiger.generator(
-        args.script, args.name, config, worker=args.worker, verbose=args.verbose
+        args.script, args.name, config, worker=args.worker, verbose=args.verbose, globalseed=args.seed
     )
 
     if args.output is not None:
