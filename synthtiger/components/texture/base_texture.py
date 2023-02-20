@@ -30,8 +30,6 @@ class BaseTexture(Component):
         if meta is None:
             meta = {}
 
-        if len(self.paths) == 0:
-            raise RuntimeError("Texture path is not specified")
         if len(self.paths) != len(self.weights):
             raise RuntimeError(
                 "The number of weights does not match the number of texture paths"
@@ -95,6 +93,9 @@ class BaseTexture(Component):
             self._counts.append(len(paths))
 
     def _read_texture(self, path, grayscale=False):
+        if not path:
+            # return a white texture
+            return np.ones((100, 100, 4), dtype=np.float32)
         texture = Image.open(path)
         texture = ImageOps.exif_transpose(texture)
         if grayscale:
@@ -104,6 +105,8 @@ class BaseTexture(Component):
         return texture
 
     def _get_size(self, path):
+        if not path:
+            return 100, 100
         texture = Image.open(path)
         width, height = texture.size
         exif = dict(texture.getexif())
@@ -112,6 +115,8 @@ class BaseTexture(Component):
         return width, height
 
     def _sample_texture(self):
+        if len(self.paths) == 0:
+            return None  # no textures given
         key = np.random.choice(len(self.paths), p=self._probs)
         if self._counts[key] == 0:
             raise RuntimeError(f"There is no texture: {self.paths[key]}")
